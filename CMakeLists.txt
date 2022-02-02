@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 find_package (Threads REQUIRED)
 
-#Include KCP
+# Where we get kissnet from
 include(ExternalProject)
 ExternalProject_Add(kissnet_source
         GIT_REPOSITORY https://github.com/andersc/kissnet.git
@@ -19,12 +19,15 @@ ExternalProject_Add(kissnet_source
         INSTALL_COMMAND ""
         )
 
+# Where we get the header file from
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/kissnet/)
 
+# Build multicast_send
 add_executable(multicast_send multicast_send.cpp)
 add_dependencies(multicast_send kissnet_source)
 target_link_libraries(multicast_send Threads::Threads)
 
+# Build multicast_receive
 add_executable(multicast_receive multicast_receive.cpp)
 add_dependencies(multicast_receive kissnet_source)
 target_link_libraries(multicast_receive Threads::Threads)
